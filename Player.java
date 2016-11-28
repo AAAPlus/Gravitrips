@@ -1,7 +1,9 @@
 
 public abstract class Player{
 	
-	private String figure = "";
+	//test
+	
+	private String figure;
 		
 	public String getFigure() {
 		return figure;
