@@ -1,5 +1,13 @@
 public class Field {
 
+	public Field() {
+		for (int i = 0; i < MAX_ROWS; i++) {
+			for (int j = 0; j < MAX_COLUMS; j++) {
+				gameField[i][j] = FIELD_SIGN;
+			}
+		}
+	}
+	
 	public static final String X_SIGN = "X";
 	public static final String O_SIGN = "0";
 	public static final String FIELD_SIGN = "*";
@@ -8,12 +16,12 @@ public class Field {
 	
 	String[][] gameField = new String[MAX_ROWS][MAX_COLUMS];
 
-	public void createField() {
-		for (int i = 0; i < MAX_ROWS; i++) {
-			for (int j = 0; j < MAX_COLUMS; j++) {
-				gameField[i][j] = FIELD_SIGN;
-			}
+	public int checkSlot(int move) {
+		int i = 5;
+		while (gameField[i][move] != FIELD_SIGN) {
+			i--;
 		}
+		return i;
 	}
 
 	public void printingField() {
@@ -33,12 +41,12 @@ public class Field {
 	}
 
 	public boolean isFieldfull() {
-		boolean result = true;
+		boolean result = false;
 
 		for (int i = 0; i < MAX_ROWS; i++) {
 			for (int j = 0; j < MAX_COLUMS; j++) {
 				if (gameField[i][j].equals(FIELD_SIGN)) {
-					result = false;
+					result = true;
 				}
 
 			}

@@ -1,15 +1,21 @@
 public class Game {
 
-	Field fieldObj = new Field();
+	private Field fieldObj;
+
 	private Player playerOne;
 	private Player playerTwo;
 	private Player currentPlayer;
+	private boolean hasGameEnded;
 
-	boolean firstPlayerActive = true;
-	private int choice = 0;
-	int slotNr = 0;
-	String figure;
-	
+	private boolean firstPlayerActive = true;
+
+	public boolean HasGameEnded() {
+		return hasGameEnded;
+	}
+
+	public void setHasGameEnded() {
+		this.hasGameEnded = true;
+	}
 
 	public Player allocatePlayer(int i) {
 		Player player = null;
@@ -31,40 +37,40 @@ public class Game {
 		}
 	}
 
-	public void startGame() {
-		fieldObj.createField();
+	public Field startGame() {
+		this.fieldObj = new Field();
 		this.currentPlayer = playerOne;
+		return fieldObj;
+
 	}
 
 	public void makeMove() {
-
+		int choice = 0;
+		String figure = null;
+		int SlotNr = 0;
 		boolean attemp = false;
+
+		fieldObj.printingField();
 
 		do {
 			try {
-				if (currentPlayer.getClass().equals(Human.class)) {
-					choice = currentPlayer.getHit();
-					figure = currentPlayer.getFigure();
-				}
-				if (currentPlayer instanceof Comp) {
-					choice = currentPlayer.getHit();
-					figure = currentPlayer.getFigure();
-				}
-				slotNr = checkSlot(choice);
+				choice = currentPlayer.getHit();
+				figure = currentPlayer.getFigure();
+				SlotNr = fieldObj.checkSlot(choice);
 				attemp = true;
 			} catch (ArrayIndexOutOfBoundsException e) {
 				System.out.println("Oops it is already full, try another column!");
 			}
 		} while (!attemp);
-		fieldObj.addingHit(this.slotNr, this.choice, this.figure);
+		fieldObj.addingHit(SlotNr, choice, figure);
 
 	}
 
 	public String getWinner() {
 		String winner;
-		if (firstPlayerActive){
+		if (firstPlayerActive) {
 			winner = "PLAYER 1";
-		}else{
+		} else {
 			winner = "PLAYER 2";
 		}
 		return winner;
@@ -73,10 +79,10 @@ public class Game {
 	public void changePlayer() {
 		if (firstPlayerActive) {
 			currentPlayer = playerTwo;
-			firstPlayerActive = false;
+			this.firstPlayerActive = false;
 		} else {
 			currentPlayer = playerOne;
-			firstPlayerActive = true;
+			this.firstPlayerActive = true;
 		}
 	}
 
@@ -88,21 +94,13 @@ public class Game {
 		this.playerTwo = playerTwo;
 	}
 
-	public int checkSlot(int move) {
-		int i = 5;
-		while (fieldObj.gameField[i][move] != Field.FIELD_SIGN) {
-			i--;
-		}
-		return i;
-	}
-
-	public boolean horizontalCheck() {
-
-		boolean winner = false;
+	public void horizontalCheck() {
 
 		for (int i = 0; i < Field.MAX_ROWS; i++) {
+
 			int x = 0;
 			int y = 0;
+
 			for (int j = 0; j < Field.MAX_COLUMS; j++) {
 
 				if (fieldObj.gameField[i][j].equals(Field.X_SIGN)) {
@@ -117,18 +115,9 @@ public class Game {
 					x = 0;
 					y = 0;
 				}
-				if (x == 4 || y == 4) {
-				
-					winner = true;
-				}
+				checkWinner(x, y);
 			}
 		}
-		return winner;
-	}
-
-	public boolean verticalCheck() {
-		boolean winner = false;
-
 		for (int i = 0; i < Field.MAX_COLUMS; i++) {
 			int x = 0;
 			int y = 0;
@@ -147,28 +136,18 @@ public class Game {
 
 					x = 0;
 					y = 0;
+				}
+				checkWinner(x, y);
 
-				}
-				if (x == 4 || y == 4) {
-					winner = true;
-				}
 			}
 		}
-		return winner;
-	}
-
-	public boolean diametralRightCheck() {
-
-		boolean winner = false;
-
 		for (int i = 3; i < Field.MAX_ROWS; i++) {
-
+			int x = 0;
+			int y = 0;
 			for (int j = 0; j < 4; j++) {
 
 				int a = i;
 				int b = j;
-				int x = 0;
-				int y = 0;
 
 				for (int z = 0; z < 4; z++) {
 
@@ -184,30 +163,19 @@ public class Game {
 						x = 0;
 						y = 0;
 					}
-					if (x == 4 || y == 4) {
-						winner = true;
-					}
-
+					checkWinner(x, y);
 					a--;
 					b++;
 				}
 			}
 		}
-		return winner;
-	}
-
-	public boolean diametralLeftCheck() {
-
-		boolean winner = false;
-
 		for (int i = 3; i < Field.MAX_ROWS; i++) {
-
+			int x = 0;
+			int y = 0;
 			for (int j = 3; j < Field.MAX_COLUMS; j++) {
 
 				int a = i;
 				int b = j;
-				int x = 0;
-				int y = 0;
 				for (int z = 0; z < 4; z++) {
 
 					if (fieldObj.gameField[a][b].equals(Field.X_SIGN)) {
@@ -222,15 +190,27 @@ public class Game {
 						x = 0;
 						y = 0;
 					}
-					if (x == 4 || y == 4) {
-						winner = true;
-					}
+					checkWinner(x, y);
 					a--;
 					b--;
 				}
 			}
 		}
-
-		return winner;
 	}
+
+	public void checkWinner(int x, int y) {
+		if (x == 4 || y == 4) {
+			System.out.println("You are the Winner!!!! it is " + getWinner() + "x=" + x + " y=" + y);
+			setHasGameEnded();
+			fieldObj.printingField();
+		}
+	}
+
+	public void isFieldFull() {
+		if (fieldObj.isFieldfull()) {
+			setHasGameEnded();
+			System.out.println("The Game Has ended, no more free slots!!");
+		}
+	}
+
 }

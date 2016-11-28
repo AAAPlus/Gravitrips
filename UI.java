@@ -4,7 +4,6 @@ public class UI {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		boolean hasGameEnded = false;
 		Game newGame = new Game();
 
 		System.out.println("Player 1: 1 for Human, 2 for Comp");
@@ -18,22 +17,13 @@ public class UI {
 
 		newGame.startGame();
 
-		while (!hasGameEnded) {
+		while (!newGame.HasGameEnded()) {
 
 			newGame.makeMove();
-			newGame.fieldObj.printingField();
 
-			if (newGame.horizontalCheck() || newGame.verticalCheck() || 
-					newGame.diametralLeftCheck() || newGame.diametralRightCheck() ) {
-				System.out.println("WE HAVE A WINNER: " + newGame.getWinner());
-				newGame.fieldObj.printingField();
-				hasGameEnded = true;
-			}
+			newGame.horizontalCheck();
+
 			
-			if (newGame.fieldObj.isFieldfull()) {
-				hasGameEnded = true;
-				System.out.println("The Game Has ended, no more free slots!!");
-			}
 			newGame.changePlayer();
 		}
 		System.out.println("Goodbuy");
