@@ -6,6 +6,8 @@ public class Game {
 	private Player playerTwo;
 	private Player currentPlayer;
 	private boolean hasGameEnded;
+	
+	private final static int MAX_MIN_MID = 5;
 
 	private boolean firstPlayerActive = true;
 
