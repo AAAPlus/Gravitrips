@@ -5,28 +5,23 @@ public class Game {
 	private Player playerOne;
 	private Player playerTwo;
 	private Player currentPlayer;
-	private boolean hasGameEnded;
-	
-	private final static int MAX_MIN_MID = 5;
+	private boolean hasGameEnded = false;
 
 	private boolean firstPlayerActive = true;
 
-	public boolean HasGameEnded() {
-		return hasGameEnded;
-	}
-
-	public void setHasGameEnded() {
+		public void setHasGameEnded() {
 		this.hasGameEnded = true;
 	}
 
-	public Player allocatePlayer(int i) {
-		Player player = null;
-		if (i == 1) {
-			player = new Human();
-		} else if (i == 2) {
-			player = new Comp();
+	public void runTime() {
+		while (!hasGameEnded) {
+
+			makeMove();
+
+			winnerCheck();
+
+			changePlayer();
 		}
-		return player;
 	}
 
 	public void settingSigns(String i) {
@@ -96,15 +91,16 @@ public class Game {
 		this.playerTwo = playerTwo;
 	}
 
-	public void horizontalCheck() {
-
-		for (int i = 0; i < Field.MAX_ROWS; i++) {
+	public void winnerCheck() {
+		boolean winner = false;
+		for (int i = 0; i < Field.MAX_ROWS; i++) { 
 
 			int x = 0;
 			int y = 0;
 
 			for (int j = 0; j < Field.MAX_COLUMS; j++) {
-
+ 
+				
 				if (field.gameField[i][j].equals(Field.X_SIGN)) {
 					x++;
 					y = 0;
@@ -117,10 +113,11 @@ public class Game {
 					x = 0;
 					y = 0;
 				}
-				checkWinner(x, y);
+				winner = checkFourSlots(x, y, winner);
 			}
 		}
-		for (int i = 0; i < Field.MAX_COLUMS; i++) {
+
+		for (int i = 0; i < Field.MAX_COLUMS; i++) { 
 			int x = 0;
 			int y = 0;
 			for (int j = 0; j < Field.MAX_ROWS; j++) {
@@ -139,15 +136,16 @@ public class Game {
 					x = 0;
 					y = 0;
 				}
-				checkWinner(x, y);
+				winner = checkFourSlots(x, y, winner);
 
 			}
 		}
-		for (int i = 3; i < Field.MAX_ROWS; i++) {
-			int x = 0;
-			int y = 0;
-			for (int j = 0; j < 4; j++) {
 
+		for (int i = 3; i < Field.MAX_ROWS; i++) {
+
+			for (int j = 0; j < 4; j++) {
+				int x = 0;
+				int y = 0;
 				int a = i;
 				int b = j;
 
@@ -165,17 +163,18 @@ public class Game {
 						x = 0;
 						y = 0;
 					}
-					checkWinner(x, y);
 					a--;
 					b++;
 				}
+				winner = checkFourSlots(x, y, winner);
+
 			}
 		}
 		for (int i = 3; i < Field.MAX_ROWS; i++) {
-			int x = 0;
-			int y = 0;
-			for (int j = 3; j < Field.MAX_COLUMS; j++) {
 
+			for (int j = 3; j < Field.MAX_COLUMS; j++) {
+				int x = 0;
+				int y = 0;
 				int a = i;
 				int b = j;
 				for (int z = 0; z < 4; z++) {
@@ -192,21 +191,26 @@ public class Game {
 						x = 0;
 						y = 0;
 					}
-					checkWinner(x, y);
 					a--;
 					b--;
 				}
+				winner = checkFourSlots(x, y, winner);
+
 			}
 		}
+		if (winner) {
+		}
+
 	}
 
-	
-	public void checkWinner(int x, int y) {
-		if (x == 4 || y == 4) {
-			System.out.println("You are the Winner!!!! it is " + getWinner() + "x=" + x + " y=" + y);
+	public boolean checkFourSlots(int x, int y, boolean z) {
+		if ((x == 4 || y == 4)&& !z) {
 			setHasGameEnded();
 			field.printingField();
+			z = true;
+			System.out.println(getWinner() + " has won the game!");
 		}
+		return z;
 	}
 
 	public void isFieldFull() {
@@ -215,5 +219,6 @@ public class Game {
 			System.out.println("The Game Has ended, no more free slots!!");
 		}
 	}
+	
 
 }
