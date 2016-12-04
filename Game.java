@@ -49,23 +49,17 @@ public class Game {
 	public void makeMove() {
 		int choice = 0;
 		String figure = null;
-		int SlotNr = 0;
-		boolean attemp = false;
+		int slotNr = 0;
 
 		field.printingField();
-
-		do {
-			try {
+			do {
+				
 				choice = currentPlayer.getHit();
 				figure = currentPlayer.getFigure();
-				SlotNr = field.checkSlot(choice);
-				attemp = true;
-			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("Oops it is already full, try another column!");
-			}
-		} while (!attemp);
-		field.addingHit(SlotNr, choice, figure);
-
+			
+			} while(field.outOfBounds(choice));
+			slotNr = field.checkSlot(choice);
+		field.addingHit(slotNr, choice, figure);
 	}
 
 	public String getWinner() {

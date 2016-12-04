@@ -57,4 +57,15 @@ public class Field {
 		}
 		return result;
 	}
+
+	public boolean outOfBounds(int choice){
+		boolean result = false;
+		if(gameField[0][choice] != FIELD_SIGN){
+			result = true;
+			System.out.println("Oops it is already full, try another column!");
+
+		}
+			return result;
+	}
+	
 }
