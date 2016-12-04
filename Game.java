@@ -1,20 +1,27 @@
 public class Game {
-
+	
 	private Field field;
-
 	private Player playerOne;
 	private Player playerTwo;
 	private Player currentPlayer;
 	private boolean hasGameEnded = false;
-
-	private boolean firstPlayerActive = true;
-
-		public void setHasGameEnded() {
+	
+	public Game(){
+		field = new Field();
+	
+	}
+	
+	public void setCurrentPlayer(){
+		this.currentPlayer = playerOne;
+	}
+	
+	
+	public void setGameEnded() {
 		this.hasGameEnded = true;
 	}
 
 	public void runTime() {
-		while (!hasGameEnded) {
+		while (!hasGameEnded && !field.isFieldfull()) {
 
 			makeMove();
 
@@ -34,12 +41,10 @@ public class Game {
 		}
 	}
 
-	public Field startGame() {
+	/*public void startGame() {
 		this.field = new Field();
 		this.currentPlayer = playerOne;
-		return field;
-
-	}
+	}*/
 
 	public void makeMove() {
 		int choice = 0;
@@ -65,7 +70,7 @@ public class Game {
 
 	public String getWinner() {
 		String winner;
-		if (firstPlayerActive) {
+		if (currentPlayer == playerOne) {
 			winner = "PLAYER 1";
 		} else {
 			winner = "PLAYER 2";
@@ -74,12 +79,10 @@ public class Game {
 	}
 
 	public void changePlayer() {
-		if (firstPlayerActive) {
+		if (currentPlayer == playerOne) {
 			currentPlayer = playerTwo;
-			this.firstPlayerActive = false;
 		} else {
 			currentPlayer = playerOne;
-			this.firstPlayerActive = true;
 		}
 	}
 
@@ -93,14 +96,13 @@ public class Game {
 
 	public void winnerCheck() {
 		boolean winner = false;
-		for (int i = 0; i < Field.MAX_ROWS; i++) { 
+		for (int i = 0; i < Field.MAX_ROWS; i++) {
 
 			int x = 0;
 			int y = 0;
 
 			for (int j = 0; j < Field.MAX_COLUMS; j++) {
- 
-				
+
 				if (field.gameField[i][j].equals(Field.X_SIGN)) {
 					x++;
 					y = 0;
@@ -117,7 +119,7 @@ public class Game {
 			}
 		}
 
-		for (int i = 0; i < Field.MAX_COLUMS; i++) { 
+		for (int i = 0; i < Field.MAX_COLUMS; i++) {
 			int x = 0;
 			int y = 0;
 			for (int j = 0; j < Field.MAX_ROWS; j++) {
@@ -198,27 +200,16 @@ public class Game {
 
 			}
 		}
-		if (winner) {
-		}
 
 	}
 
 	public boolean checkFourSlots(int x, int y, boolean z) {
-		if ((x == 4 || y == 4)&& !z) {
-			setHasGameEnded();
+		if ((x == 4 || y == 4) && !z) {
+			setGameEnded();
 			field.printingField();
 			z = true;
 			System.out.println(getWinner() + " has won the game!");
 		}
 		return z;
 	}
-
-	public void isFieldFull() {
-		if (field.isFieldfull()) {
-			setHasGameEnded();
-			System.out.println("The Game Has ended, no more free slots!!");
-		}
-	}
-	
-
 }

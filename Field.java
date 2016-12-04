@@ -7,13 +7,13 @@ public class Field {
 			}
 		}
 	}
-	
+
 	public static final String X_SIGN = "X";
 	public static final String O_SIGN = "0";
 	public static final String FIELD_SIGN = "*";
 	public static final int MAX_ROWS = 6;
 	public static final int MAX_COLUMS = 7;
-	
+
 	String[][] gameField = new String[MAX_ROWS][MAX_COLUMS];
 
 	public int checkSlot(int move) {
@@ -41,15 +41,19 @@ public class Field {
 	}
 
 	public boolean isFieldfull() {
-		boolean result = false;
+		boolean result = true;
 
 		for (int i = 0; i < MAX_ROWS; i++) {
 			for (int j = 0; j < MAX_COLUMS; j++) {
 				if (gameField[i][j].equals(FIELD_SIGN)) {
-					result = true;
+					result = false;
 				}
 
 			}
+		}
+		if (result == true) {
+			System.out.println("The Game Has ended, no more free slots!!");
+
 		}
 		return result;
 	}
