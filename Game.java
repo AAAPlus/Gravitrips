@@ -41,11 +41,6 @@ public class Game {
 		}
 	}
 
-	/*public void startGame() {
-		this.field = new Field();
-		this.currentPlayer = playerOne;
-	}*/
-
 	public void makeMove() {
 		int choice = 0;
 		String figure = null;
@@ -89,7 +84,6 @@ public class Game {
 	}
 
 	public void winnerCheck() {
-		boolean winner = false;
 		for (int i = 0; i < Field.MAX_ROWS; i++) {
 
 			int x = 0;
@@ -109,7 +103,7 @@ public class Game {
 					x = 0;
 					y = 0;
 				}
-				winner = checkFourSlots(x, y, winner);
+				checkFourSlots(x, y);
 			}
 		}
 
@@ -132,7 +126,7 @@ public class Game {
 					x = 0;
 					y = 0;
 				}
-				winner = checkFourSlots(x, y, winner);
+				checkFourSlots(x, y);
 
 			}
 		}
@@ -162,7 +156,7 @@ public class Game {
 					a--;
 					b++;
 				}
-				winner = checkFourSlots(x, y, winner);
+				checkFourSlots(x, y);
 
 			}
 		}
@@ -190,20 +184,18 @@ public class Game {
 					a--;
 					b--;
 				}
-				winner = checkFourSlots(x, y, winner);
+				checkFourSlots(x, y);
 
 			}
 		}
 
 	}
 
-	public boolean checkFourSlots(int x, int y, boolean z) {
-		if ((x == 4 || y == 4) && !z) {
+	public void checkFourSlots(int x, int y) {
+		if ((x == 4 || y == 4) && !hasGameEnded) {
 			setGameEnded();
 			field.printingField();
-			z = true;
 			System.out.println(getWinner() + " has won the game!");
 		}
-		return z;
 	}
 }

@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class UI {
-
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		Game newGame = new Game();
